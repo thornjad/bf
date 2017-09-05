@@ -1,2 +1,8 @@
-# brainfuck-js
-A JavaScript implementation of the Brainfuck language
+# bf
+
+Various implementations of Brainfuck.
+
+Currently in development:
+
+* Javascript
+* C
