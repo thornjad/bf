@@ -34,3 +34,11 @@ void inc() {
 void dec() {
   --tape[head];
 }
+
+void left() {
+  --head;
+}
+
+void right() {
+  ++head;
+}
