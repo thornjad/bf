@@ -6,7 +6,7 @@
 void printVersion();
 
 char tape[32000] = {0};
-char *head = &tape[0];
+char head = 0;
 
 int main(int argc, char const *argv[]) {
   printVersion();
@@ -28,9 +28,9 @@ void printVersion() {
 }
 
 void inc() {
-  ++head;
+  ++tape[head];
 }
 
 void dec() {
-  --head;
+  --tape[head];
 }
