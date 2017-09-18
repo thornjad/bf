@@ -30,3 +30,7 @@ void printVersion() {
 void inc() {
   ++head;
 }
+
+void dec() {
+  --head;
+}
