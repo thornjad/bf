@@ -42,3 +42,11 @@ void left() {
 void right() {
   ++head;
 }
+
+void put() {
+  putchar(tape[head]);
+}
+
+void get() {
+  tape[head] = getchar();
+}
