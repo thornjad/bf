@@ -4,7 +4,8 @@
   "description": "A JavaScript implementation and compiler for the Brainfuck language",
   "main": "bfc.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node bfc.js"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,5 @@
     "url": "https://github.com/Raindeer44/brainfuck-js/issues"
   },
   "homepage": "https://github.com/Raindeer44/brainfuck-js#readme",
-  "dependencies": {
-    "commander": "^2.11.0"
-  }
+  "dependencies": {}
 }

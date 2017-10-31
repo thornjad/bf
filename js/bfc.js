@@ -1,13 +1,29 @@
-#!/usr/bin/env node
-
-const program = require('commander');
 const packageInfo = require('./package.json');
+const fs = require('fs');
 
-program
-  .version(packageInfo.version)
-  .arguments()
-  .action();
+function main() {
+  if (process.argv[2] === undefined) {
+    printVersion();
+    printHelp();
+  } else {
+    const path = process.argv[2];
+    if (isFileBF(path)) {
 
-program
-  // .option('-w, --wasm', 'Compile to WebAssembly')
-  // .option('-a, --asmjs', 'Compile to asm.js compatible code');
+    } else {
+      console.error('File must be either .b or .bf');
+      process.exit(1);
+    }
+  }
+}
+
+function isFileBF(path) {
+  console.log(path);
+  return true;
+}
+
+function inArray(arr, val) {
+  return arr.indexOf(val) > -1;
+}
+
+// begin!
+main();
