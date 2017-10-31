@@ -4,8 +4,7 @@
   "description": "A JavaScript implementation and compiler for the Brainfuck language",
   "main": "bfc.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node bfc.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
