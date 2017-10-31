@@ -8,12 +8,25 @@ function main() {
   } else {
     const path = process.argv[2];
     if (isFileBF(path)) {
-
+      console.log('hey!');
     } else {
       console.error('File must be either .b or .bf');
       process.exit(1);
     }
   }
+}
+
+function printVersion() {
+  console.log(packageInfo.version);
+}
+
+function printHelp() {
+  const str = `
+Transpiler for language brainfuck
+
+Enter a bf file as the first argument to this script
+  `;
+  console.log(str);
 }
 
 function isFileBF(path) {
