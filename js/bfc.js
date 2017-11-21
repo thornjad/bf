@@ -40,3 +40,48 @@ function inArray(arr, val) {
 
 // begin!
 main();
+
+class AMachine {
+  constructor(size) {
+    this.mem = new Array(36000);
+    this.ptr = this.mem.length / 2;
+  }
+
+  inc() {
+    if (++this.ptr > this.mem.length) {
+      this.extendMemory(1);
+    }
+  }
+
+  dec() {
+    if (--this.ptr < 0) {
+      this.extendMemory(0);
+    }
+  }
+
+  setSym(sym) {
+    this.mem[this.ptr] = sym;
+  }
+
+  getSym() {
+    return this.mem[this.ptr];
+  }
+
+  extendMemory(dir) {
+    if (dir === 0) {
+      // extend down
+      this.ptr = this.ptr + this.mem.length;
+      this.mem = new Array(this.mem.length + 1).concat(this.mem);
+    } else if (dir === 1) {
+      // extend up
+      this.mem = this.mem.concat(new Array(this.mem.length + 1));
+      // ptr remains where it is
+    }
+  }
+}
+
+class BFInterpreter {
+  constructor() {
+
+  }
+}
