@@ -43,8 +43,8 @@ main();
 
 class AMachine {
   constructor(size) {
-    this.mem = new Array(36000);
-    this.ptr = this.mem.length / 2;
+    this.mem = new Array(size);
+    this.ptr = size / 2;
   }
 
   inc() {
@@ -82,6 +82,10 @@ class AMachine {
 
 class BFInterpreter {
   constructor() {
+    this.machine = new AMachine(36000);
+  }
+
+  exec(codeStr) {
 
   }
 }
