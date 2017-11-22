@@ -1,38 +1,40 @@
-/* brainfuck translator, using a C intermediary file
+/* brainfuck interpreter, using a C intermediary file
  *
  * Copyright 2017 Jade M Thornton
  * Free for use under the terms of the ISC license
  *
- * the translator takes a single .bf file as input and outputs the
- * equivalent .c file. All illegal brainfuck characters are treated
- * as whitespace.
+ * The interpreter takes a single .bf file as an argument and runs it.
+ * All illegal brainfuck characters are treated as
+ * whitespace.
  *
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
-int run(char const inPath[], char const outPath[]);
+void parse(char const path[]);
 
 int main(int argc, char const *argv[]) {
   if (argc <= 1) {
     printf("No arguments supplied\n");
     return 1;
   }
-  if (argc == 2) {
-    argv[2] = "bfa.c";
-  }
-  return run(argv[1], argv[2]);
+  parse(argv[1]);
+  system("cc -Wall bfa.c -o bfa");
+  system("./bfa");
+  system("rm -f bfa bfa.c");
+
 }
 
-int run(char const inPath[], char const outPath[]) {
-  FILE *srcFile = fopen(inPath, "r");
+void parse(char const path[]) {
+  FILE *srcFile = fopen(path, "r");
   if (srcFile == 0) {
     printf("Could not open source file");
-    return 1;
+    exit(1);
   } else {
     char c;
     // create output file
-    FILE *outFile = fopen(outPath, "w");
+    FILE *outFile = fopen("bfa.c", "w");
 
     // initialize turing machine
     fputs("#include <stdio.h>\n#include <stdlib.h>\n", outFile);
@@ -95,6 +97,5 @@ int run(char const inPath[], char const outPath[]) {
     fputs("}", outFile);
     fclose(srcFile);
     fclose(outFile);
-    return 0;
   }
 }
