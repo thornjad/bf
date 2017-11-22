@@ -1,4 +1,13 @@
-// brainfuck translator, using a C intermediary file
+/* brainfuck translator, using a C intermediary file
+ *
+ * Copyright 2017 Jade M Thornton
+ * Free for use under the terms of the ISC license
+ *
+ * the translator takes a single .bf file as input and outputs the
+ * equivalent .c file. All illegal brainfuck characters are treated
+ * as whitespace.
+ *
+ */
 
 #include <stdio.h>
 
