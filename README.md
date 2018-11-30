@@ -1,3 +1,3 @@
 # bf
 
-A naive implementation of the brainfuck language
+A naïve implementation of the brainfuck language
