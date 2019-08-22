@@ -13,9 +13,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* void parse(char const path[]); */
-/* char* mapSymbol(char bfChar); */
-
 char* mapSymbol(char bfChar) {
 	switch(bfChar) {
 		case '>':
@@ -39,56 +36,61 @@ char* mapSymbol(char bfChar) {
 	}
 }
 
-void parse(char const path[]) {
-	FILE *srcFile = fopen(path, "r");
-	if (srcFile == 0) {
-		printf("Could not open source file");
-		exit(1);
-	} else {
-		char c;
-		// create output file
-		FILE *outFile = fopen("bfa.c", "w");
 
-		// initialize turing machine
-		fputs("#include <stdio.h>\n#include <stdlib.h>\n", outFile);
-		fputs("int main(void){", outFile);
-		fputs("char*a=calloc(120000,sizeof(int));", outFile);
-		fputs("if(a==NULL){printf(\"Unable to allocate space\");exit(1);}", outFile);
-		fputs("char*p=a;\n", outFile);
+#define MACHINE_SETUP "#include<stdio.h>\n#include <stdlib.h>\nint main(void){char*a=calloc(120000,sizeof(int));if(a==NULL){perror(\"Alloc failed\");}char*p=a;"
+#define MACHINE_BREAKDOWN "free(a);}"
 
-		// translate src file
-		while ((c = fgetc(srcFile)) != EOF) {
-			fputs(mapSymbol(c), outFile);
-		}
+FILE* putMachineSetup(FILE *file) {
+	fputs(MACHINE_SETUP, file);
+	return file;
+}
 
-		fputs("free(a);", outFile);
-		fputs("}", outFile);
-		fclose(srcFile);
-		fclose(outFile);
+FILE* putMachineBreakdown(FILE *file) {
+	fputs(MACHINE_BREAKDOWN, file);
+	return file;
+}
+
+FILE* transpile(FILE *from, FILE *to) {
+	char c;
+	while ((c = fgetc(from)) != EOF) {
+		fputs(mapSymbol(c), to);
 	}
+	return to;
+}
+
+FILE* openFile(char const *path, char* dir) {
+	FILE *file = fopen(path, dir);
+	if (file == 0) {
+		perror("Could not open file");
+		exit(1);
+	}
+	return file;
+}
+
+void compile(char const path[]) {
+	FILE *srcFile = openFile(path, "r");
+	FILE *outFile = openFile("bfa.c", "w");
+
+	outFile = putMachineSetup(outFile);
+	outFile = transpile(srcFile, outFile);
+	outFile = putMachineBreakdown(outFile);
+
+	fclose(srcFile);
+	fclose(outFile);
 }
 
 
 int main(int argc, char const *argv[]) {
 	if (argc <= 1) {
-		printf("Usage:\n\tbf [subcommand] <file>\n");
+		printf("Usage: bf <file> [--compile-only]\n");
 		return 1;
 	}
 
-	char run = strncmp(argv[1], "run", 3) == 0;
-	char compile = run | (strncmp(argv[1], "compile", 7) == 0);
-	char noSubcommand = ~run & ~compile;
+	compile(argv[1]);
 
-	if (compile | run) {
-		parse(argv[2]);
-	} else {
-		parse(argv[1]);
-	}
-
-	if (run | noSubcommand) {
-		system("cc -Wall bfa.c -o bfa");
-		system("./bfa");
-		system("rm -f bfa bfa.c");
+	// trail with --compile or --compile-only to only compile
+	if (argc <= 2 || ~(strncmp(argv[2], "--compile", 9) == 0)) {
+		system("cc -Wall bfa.c -o bfa && ./bfa && rm -f bfa bfa.c");
 	}
 
 	return 0;
