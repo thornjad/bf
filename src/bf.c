@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 /* void parse(char const path[]); */
@@ -70,11 +71,25 @@ void parse(char const path[]) {
 
 int main(int argc, char const *argv[]) {
   if (argc <= 1) {
-    printf("No arguments supplied\n");
+    printf("Usage:\n\tbf [subcommand] <file>\n");
     return 1;
- }
-  parse(argv[1]);
-  system("cc -Wall bfa.c -o bfa");
-  system("./bfa");
-  system("rm -f bfa bfa.c");
+	}
+
+	char run = strncmp(argv[1], "run", 3) == 0;
+	char compile = run | (strncmp(argv[1], "compile", 7) == 0);
+	char noSubcommand = ~run & ~compile;
+
+	if (compile | run) {
+		parse(argv[2]);
+	} else {
+		parse(argv[1]);
+	}
+
+	if (run | noSubcommand) {
+		system("cc -Wall bfa.c -o bfa");
+		system("./bfa");
+		system("rm -f bfa bfa.c");
+	}
+
+	return 0;
 }
