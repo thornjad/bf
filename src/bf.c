@@ -12,18 +12,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void parse(char const path[]);
+/* void parse(char const path[]); */
+/* char* mapSymbol(char bfChar); */
 
-int main(int argc, char const *argv[]) {
-  if (argc <= 1) {
-    printf("No arguments supplied\n");
-    return 1;
-  }
-  parse(argv[1]);
-  system("cc -Wall bfa.c -o bfa");
-  system("./bfa");
-  system("rm -f bfa bfa.c");
-
+char* mapSymbol(char bfChar) {
+	switch(bfChar) {
+		case '>':
+			return "++p;";
+		case '<':
+			return "--p;";
+		case '+':
+			return "++*p;";
+		case '-':
+			return "--*p;";
+		case '.':
+			return "putchar(*p);";
+		case ',':
+			return "*p=getchar();";
+		case '[':
+			return "while(*p){";
+		case ']':
+			return "}";
+		default:
+			return "";
+	}
 }
 
 void parse(char const path[]) {
@@ -44,58 +56,25 @@ void parse(char const path[]) {
     fputs("char*p=a;\n", outFile);
 
     // translate src file
-    int currentLineLen = 0;
-    int charsAdded = 0;
     while ((c = fgetc(srcFile)) != EOF) {
-      switch (c) {
-        case '>':
-          fputs("++p;", outFile);
-          charsAdded = 4;
-          break;
-        case '<':
-          fputs("--p;", outFile);
-          charsAdded = 4;
-          break;
-        case '+':
-          fputs("++*p;", outFile);
-          charsAdded = 5;
-          break;
-        case '-':
-          fputs("--*p;", outFile);
-          charsAdded = 5;
-          break;
-        case '.':
-          fputs("putchar(*p);", outFile);
-          charsAdded = 12;
-          break;
-        case ',':
-          fputs("*p=getchar();", outFile);
-          charsAdded = 13;
-          break;
-        case '[':
-          fputs("while(*p){", outFile);
-          charsAdded = 10;
-          break;
-        case ']':
-          fputs("}", outFile);
-          charsAdded = 1;
-          break;
-        default:
-          // all other input ignored
-          charsAdded = 0;
-          break;
-      }
-      if (charsAdded) {
-        currentLineLen += charsAdded;
-        if (++currentLineLen > 240) {
-          fputc('\n', outFile);
-          currentLineLen = 0;
-        }
-      }
+			fputs(mapSymbol(c), outFile);
     }
+
     fputs("free(a);", outFile);
     fputs("}", outFile);
     fclose(srcFile);
     fclose(outFile);
   }
+}
+
+
+int main(int argc, char const *argv[]) {
+  if (argc <= 1) {
+    printf("No arguments supplied\n");
+    return 1;
+ }
+  parse(argv[1]);
+  system("cc -Wall bfa.c -o bfa");
+  system("./bfa");
+  system("rm -f bfa bfa.c");
 }
