@@ -1,6 +1,6 @@
 /* brainfuck interpreter, using a C intermediary file
  *
- * Copyright 2017 Jade M Thornton
+ * Copyright (c) 2017, 2019 Jade M Thornton
  * Free for use under the terms of the ISC license
  *
  * The interpreter takes a single .bf file as an argument and runs it.
