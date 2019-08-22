@@ -40,39 +40,39 @@ char* mapSymbol(char bfChar) {
 }
 
 void parse(char const path[]) {
-  FILE *srcFile = fopen(path, "r");
-  if (srcFile == 0) {
-    printf("Could not open source file");
-    exit(1);
-  } else {
-    char c;
-    // create output file
-    FILE *outFile = fopen("bfa.c", "w");
+	FILE *srcFile = fopen(path, "r");
+	if (srcFile == 0) {
+		printf("Could not open source file");
+		exit(1);
+	} else {
+		char c;
+		// create output file
+		FILE *outFile = fopen("bfa.c", "w");
 
-    // initialize turing machine
-    fputs("#include <stdio.h>\n#include <stdlib.h>\n", outFile);
-    fputs("int main(void){", outFile);
-    fputs("char*a=calloc(120000,sizeof(int));", outFile);
-    fputs("if(a==NULL){printf(\"Unable to allocate space\");exit(1);}", outFile);
-    fputs("char*p=a;\n", outFile);
+		// initialize turing machine
+		fputs("#include <stdio.h>\n#include <stdlib.h>\n", outFile);
+		fputs("int main(void){", outFile);
+		fputs("char*a=calloc(120000,sizeof(int));", outFile);
+		fputs("if(a==NULL){printf(\"Unable to allocate space\");exit(1);}", outFile);
+		fputs("char*p=a;\n", outFile);
 
-    // translate src file
-    while ((c = fgetc(srcFile)) != EOF) {
+		// translate src file
+		while ((c = fgetc(srcFile)) != EOF) {
 			fputs(mapSymbol(c), outFile);
-    }
+		}
 
-    fputs("free(a);", outFile);
-    fputs("}", outFile);
-    fclose(srcFile);
-    fclose(outFile);
-  }
+		fputs("free(a);", outFile);
+		fputs("}", outFile);
+		fclose(srcFile);
+		fclose(outFile);
+	}
 }
 
 
 int main(int argc, char const *argv[]) {
-  if (argc <= 1) {
-    printf("Usage:\n\tbf [subcommand] <file>\n");
-    return 1;
+	if (argc <= 1) {
+		printf("Usage:\n\tbf [subcommand] <file>\n");
+		return 1;
 	}
 
 	char run = strncmp(argv[1], "run", 3) == 0;
