@@ -3,9 +3,10 @@
  * Copyright (c) 2017, 2019 Jade M Thornton
  * Free for use under the terms of the ISC license
  *
- * The interpreter takes a single .bf file as an argument and runs it.
- * All illegal brainfuck characters are treated as
- * whitespace.
+ * The interpreter takes a single .bf file as an argument and runs it. All
+ * illegal brainfuck characters are treated as whitespace.
+ *
+ * To compile (to C) without running, pass --compile-only as the second argument.
  *
  */
 
@@ -52,7 +53,10 @@ FILE* putMachineBreakdown(FILE *file) {
 FILE* transpile(FILE *from, FILE *to) {
 	char c;
 	while ((c = fgetc(from)) != EOF) {
-		fputs(mapSymbol(c), to);
+		char* ct = mapSymbol(c);
+		if (ct[0] != '\0') {
+			fputs(mapSymbol(c), to);
+		}
 	}
 	return to;
 }
