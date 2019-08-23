@@ -36,7 +36,6 @@ char* mapSymbol(char bfChar) {
 	}
 }
 
-
 #define MACHINE_SETUP "#include<stdio.h>\n#include <stdlib.h>\nint main(void){char*a=calloc(120000,sizeof(int));if(a==NULL){perror(\"Alloc failed\");}char*p=a;"
 #define MACHINE_BREAKDOWN "free(a);}"
 
@@ -79,7 +78,6 @@ void compile(char const path[]) {
 	fclose(outFile);
 }
 
-
 int main(int argc, char const *argv[]) {
 	if (argc <= 1) {
 		printf("Usage: bf <file> [--compile-only]\n");
@@ -89,7 +87,7 @@ int main(int argc, char const *argv[]) {
 	compile(argv[1]);
 
 	// trail with --compile or --compile-only to only compile
-	if (argc <= 2 || ~(strncmp(argv[2], "--compile", 9) == 0)) {
+	if (argc <= 2 || strncmp(argv[2], "--compile", 9)) {
 		system("cc -Wall bfa.c -o bfa && ./bfa && rm -f bfa bfa.c");
 	}
 
